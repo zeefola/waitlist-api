@@ -38,7 +38,7 @@ Run php artisan migrate
 -- WaitLister
 Request Description: This request is used to sign up waitlisters into the waitlist
 
-url: /waitlist/lisgn-up
+url: /waitlist/sign-up
 
 method: signUp
 
