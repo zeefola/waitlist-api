@@ -48,7 +48,6 @@ class WaitListerRepository
                 'msg' => [
                     'email' => array(['Email associated with another waitlister.'])
                 ],
-                'code' => 422
             ];
         }
 
@@ -65,7 +64,6 @@ class WaitListerRepository
             'error' => false,
             'msg' => 'You are added to the waitlist',
             'data' => $waitlister,
-            'code' => 201
         ];
     }
 }
