@@ -33,11 +33,11 @@ class WaitListerRepository
      */
     public function signUp($input): array
     {
-        $fullname = $input['fullname'];
+        $fullname = strip_tags($input['fullname']);
         $email = filter_var($input['email'], FILTER_SANITIZE_EMAIL);
         $type = $input['type'];
         $asset_description = !empty($input['asset_description']) ?
-            trim(filter_var($input['asset_description'], FILTER_SANITIZE_STRING)) : null;
+            strip_tags($input['asset_description']) : null;
 
         $emailExists = $this->waitlister->where('email', $email)
             ->first();

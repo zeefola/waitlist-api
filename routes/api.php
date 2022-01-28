@@ -15,4 +15,4 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('/waitlist/sign-up', [WaitListerController::class, 'signUp']);
+Route::post('/waitlist/sign-up', [WaitListerController::class, 'signUp'])->middleware('json');
