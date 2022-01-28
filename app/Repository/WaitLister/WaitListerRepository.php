@@ -2,6 +2,8 @@
 
 namespace App\Repository\WaitLister;
 
+use App\Http\Resources\WaitListerResource;
+// use App\Models\WaitLister;
 use App\Repository\Actors\WaitListerActor;
 use Exception;
 
@@ -33,37 +35,13 @@ class WaitListerRepository
      */
     public function signUp($input): array
     {
-        $fullname = strip_tags($input['fullname']);
-        $email = filter_var($input['email'], FILTER_SANITIZE_EMAIL);
-        $type = $input['type'];
-        $asset_description = !empty($input['asset_description']) ?
-            strip_tags($input['asset_description']) : null;
-
-        $emailExists = $this->waitlister->where('email', $email)
-            ->first();
-
-        if ($emailExists) {
-            return [
-                'error' => true,
-                'msg' => [
-                    'email' => array(['Email associated with another waitlister.'])
-                ],
-            ];
-        }
-
-        $this->waitlister->create([
-            'fullname' => $fullname,
-            'email' => $email,
-            'type' => $type,
-            'asset_description' => $asset_description
-        ]);
-
-        $waitlister = $this->waitlister->findBy('email', $email);
+        $this->waitlister->create($input);
+        $waitlister = $this->waitlister->findBy('email', $input['email']);
 
         return [
-            'error' => false,
             'msg' => 'You are added to the waitlist',
-            'data' => $waitlister,
+            'data' => new WaitListerResource($waitlister),
+            'code' => 201
         ];
     }
 }

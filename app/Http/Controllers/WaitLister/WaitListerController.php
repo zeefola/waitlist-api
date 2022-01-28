@@ -3,13 +3,11 @@
 namespace App\Http\Controllers\WaitLister;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\WaitListerRequest;
 use Exception;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Validator;
 use App\Repository\WaitLister\WaitListerRepository;
-use Illuminate\Validation\Rule;
+use App\Traits\ApiResponse;
 
 /**
  * Class WaitListerController
@@ -32,30 +30,16 @@ class WaitListerController extends Controller
     }
 
     /**
-     * @param Request $request
+     * @param WaitListerRequest $request
      * @return JsonResponse
      * @throws Exception
      */
-    public function signUp(Request $request): JsonResponse
+    public function signUp(WaitListerRequest $request): JsonResponse
     {
-        $email = ['bail', 'required', 'email'];
-        if (App::environment('production')) {
-            $email = ['bail', 'required', 'email:rfc,dns'];
-        }
+        $newWaitlister = $request->validated();
 
-        $input = $request->all();
-        $validator = Validator::make($input, [
-            'fullname' => ['bail', 'required', 'string'],
-            'email' => $email,
-            'type' => ['bail', 'required', Rule::in('investor', 'asset_lister')],
-            'asset_description' => ['bail', 'required_if:type,asset_lister', 'string'],
-        ]);
+        $data = $this->waitlister->signUp($newWaitlister);
 
-        if ($validator->fails()) {
-            $messages = $validator->messages();
-            return response()->json(['error' => true, 'msg' => $messages], 422);
-        }
-
-        return response()->json($this->waitlister->signUp($input));
+        return ApiResponse::successResponseWithData($data['data'], $data['msg'], $data['code']);
     }
 }

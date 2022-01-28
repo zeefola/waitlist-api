@@ -22,8 +22,8 @@ class WaitListSignUpTest extends TestCase
         $response = $this->json('POST', '/api/waitlist/sign-up', []);
 
         $response->assertJson([
-            "error" => true,
-            "msg" => [
+            "message" => "The given data was invalid.",
+            "errors" => [
                 "fullname" => [
                     "The fullname field is required."
                 ],
@@ -56,8 +56,8 @@ class WaitListSignUpTest extends TestCase
         ]);
 
         $response->assertJson([
-            "error" => true,
-            "msg" => [
+            "message" => "The given data was invalid.",
+            "errors" => [
                 "type" => [
                     "The selected type is invalid."
                 ]
@@ -83,8 +83,8 @@ class WaitListSignUpTest extends TestCase
         ]);
 
         $response->assertJson([
-            "error" => true,
-            "msg" => [
+            "message" => "The given data was invalid.",
+            "errors" => [
                 "asset_description" => [
                     "The asset description field is required when type is asset_lister."
                 ]
@@ -118,11 +118,11 @@ class WaitListSignUpTest extends TestCase
         ]);
 
         $response->assertJson([
-            "error" => true,
-            "msg" => [
-                "email" => array([
-                    'Email associated with another waitlister.'
-                ])
+            "message" => "The given data was invalid.",
+            "errors" => [
+                "email" => [
+                    'The email has already been taken.'
+                ]
             ]
         ]);
     }
@@ -146,8 +146,8 @@ class WaitListSignUpTest extends TestCase
         ]);
 
         $response->assertJson([
-            "error" => false,
-            "msg" => "You are added to the waitlist"
+            "success" => true,
+            "message" => "You are added to the waitlist"
         ]);
 
         $this->assertDatabaseHas('wait_listers', [
@@ -178,8 +178,8 @@ class WaitListSignUpTest extends TestCase
         ]);
 
         $response->assertJson([
-            "error" => false,
-            "msg" => "You are added to the waitlist"
+            "success" => true,
+            "message" => "You are added to the waitlist"
         ]);
 
         $this->assertDatabaseHas('wait_listers', [

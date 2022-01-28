@@ -24,5 +24,19 @@ class WaitLister extends Model
         'fullname',
         'email',
         'type',
+        'asset_description',
     ];
+
+
+    public static function boot()
+    {
+
+        parent::boot();
+
+        self::creating(function ($model) {
+
+            $model->created_at = now();
+            $model->updated_at = now();
+        });
+    }
 }
