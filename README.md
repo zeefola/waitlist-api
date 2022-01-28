@@ -43,3 +43,7 @@ url: /waitlist/sign-up
 method: signUp
 
 action: post
+
+## Test on Postman
+url: https://watlist-api.herokuapp.com/api/waitlist/sign-up
+method: POST
